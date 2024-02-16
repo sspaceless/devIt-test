@@ -1,14 +1,25 @@
 import { Button, Card } from "@mui/material";
 import { useFormik } from "formik";
 import { FC, useState } from "react";
+import { useDispatch } from "react-redux";
 
+import { ResponseCard } from "./components/ResponseCard";
 import { Input } from "./components/UI";
+import { useAppSelector } from "./hooks/use-app-selector";
 import { inputSchema } from "./schemas";
+import { responseActions } from "./store/response/slice";
+import { Response } from "./store/response/types";
 import { FormValues } from "./types";
 import { doWorkWithLimit } from "./utils";
 
 const App: FC = () => {
   const [isStarted, setIsStarted] = useState(false);
+  const { responseData } = useAppSelector((state) => state.responses);
+  const dispatch = useDispatch();
+
+  const handleResponse = (response: Response) => {
+    dispatch(responseActions.pushResponse(response));
+  };
 
   const formik = useFormik<FormValues>({
     initialValues: { limit: 0 },
@@ -17,7 +28,7 @@ const App: FC = () => {
       console.log("submit");
       setIsStarted(true);
 
-      await doWorkWithLimit(limit);
+      await doWorkWithLimit(limit, handleResponse);
 
       setIsStarted(false);
     },
@@ -28,7 +39,7 @@ const App: FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col items-center p-4">
+    <div className="flex w-full flex-col items-center p-4">
       <Card className="flex w-full flex-col gap-2 p-2 sm:w-1/2 sm:max-w-[600px]">
         <Input
           id="limit"
@@ -51,6 +62,12 @@ const App: FC = () => {
           </Button>
         </div>
       </Card>
+
+      <div className="mt-4 flex flex-col gap-4 overflow-auto p-2">
+        {responseData.map((response) => {
+          return <ResponseCard key={response.index} response={response} />;
+        })}
+      </div>
     </div>
   );
 };
