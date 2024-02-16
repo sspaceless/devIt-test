@@ -1,6 +1,6 @@
 export type Response = {
-  index: number;
-  status: string;
+  index?: number;
+  status: number;
   message: string;
 };
 
