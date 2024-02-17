@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  frontend:
+    build:
+      context: .
+    ports:
+      - '80:80'
+  backend:
+    build:
+      context: ./src/server
+    ports:
+      - '8080:8080'
+

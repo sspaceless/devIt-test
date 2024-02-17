@@ -1,0 +1,10 @@
+.github/
+.idea/
+.vscode/
+.VSCodeCounter/
+
+node_modules
+
+.eslintcache
+
+*.log

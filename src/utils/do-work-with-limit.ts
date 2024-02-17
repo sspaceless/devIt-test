@@ -13,7 +13,7 @@ export const doWorkWithLimit = async (
 
   const limiter = pLimit(limit);
 
-  const tasks = Array(...Array(100)).map((value, index) =>
+  const tasks = Array(...Array(1000)).map((_value, index) =>
     limiter(() =>
       axios.post<{ index: number }>("http://localhost:8080/api", { index }),
     ),
